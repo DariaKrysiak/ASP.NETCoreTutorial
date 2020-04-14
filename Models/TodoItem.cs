@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace TutorialApi.Models
+﻿namespace TutorialApi.Models
 {
     public class TodoItem
     {
