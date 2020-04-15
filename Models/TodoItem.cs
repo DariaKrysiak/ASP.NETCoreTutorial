@@ -1,6 +1,6 @@
 ﻿namespace TutorialApi.Models
 {
-    public class TodoItem
+    public class TodoItem : ITodo
     {
         public long Id { get; set; }
         public string Name { get; set; }

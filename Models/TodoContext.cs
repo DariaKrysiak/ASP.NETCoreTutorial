@@ -5,6 +5,7 @@ namespace TutorialApi.Models
     public class TodoContext : DbContext
     {
         public DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<Person> People { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
