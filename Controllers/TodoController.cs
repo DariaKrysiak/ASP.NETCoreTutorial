@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TutorialApi.Models;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace TutorialApi.Controllers
 {
     [Route("api/Todo")]
@@ -26,14 +24,12 @@ namespace TutorialApi.Controllers
             }
         }
 
-        // GET: api/Todo
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
         {
             return await _context.TodoItems.ToListAsync();
         }
 
-        // GET: api/Todo/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
         {
@@ -47,7 +43,6 @@ namespace TutorialApi.Controllers
             return todoItem;
         }
 
-        // POST: api/Todo
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem item)
         {
@@ -57,7 +52,6 @@ namespace TutorialApi.Controllers
             return CreatedAtAction(nameof(GetTodoItem), new { id = item.Id }, item);
         }
 
-        // PUT: api/Todo/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTodoItem(long id, TodoItem item)
         {
@@ -72,7 +66,6 @@ namespace TutorialApi.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Todo/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(long id)
         {
