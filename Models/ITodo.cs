@@ -10,5 +10,8 @@ namespace TutorialApi.Models
         long Id { get; set; }
         string Name { get; set; }
         bool IsComplete { get; set; }
+
+        Nullable<long> PersonId { get; set; }
+        Person Person { get; set; }
     }
 }

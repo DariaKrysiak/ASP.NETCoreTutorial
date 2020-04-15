@@ -24,5 +24,27 @@ namespace TutorialApi.Controllers
         {
             return await _context.People.ToListAsync();
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Person>> GetPerson(long id)
+        {
+            var person = await _context.People.FindAsync(id);
+
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            return person;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Person>> PostPerson(Person person)
+        {
+            _context.People.Add(person);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetPerson), new { id = person.Id }, person);
+        }
     }
 }

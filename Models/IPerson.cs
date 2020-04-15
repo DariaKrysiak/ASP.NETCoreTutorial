@@ -9,5 +9,7 @@ namespace TutorialApi.Models
     {
         long Id { get; set; }
         string FirstName { get; set; }
+
+        ICollection<TodoItem> TodoItems { get; set; }
     }
 }
