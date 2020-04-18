@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TutorialApi.Models
 {
-    public class Person : IPerson
+    public class Person
     {
-        public Person()
-        {
-            this.TodoItems = new HashSet<TodoItem>();
-        }
-
         public long Id { get; set; }
         public string FirstName { get; set; }
 

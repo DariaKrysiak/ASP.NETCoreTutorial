@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TutorialApi.Models
 {
-    public class TodoItem : ITodo
+    public class TodoItem
     {
         public long Id { get; set; }
         public string Name { get; set; }

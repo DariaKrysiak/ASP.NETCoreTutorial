@@ -1,0 +1,127 @@
+root=true
+
+# Use UNIX line endings for .sh fils so we play nice cross platform
+[*.sh]
+end_of_line = lf
+
+[*.{cs,vb}]
+indent_style = tab
+indent_size = 4
+trim_trailing_whitespace = true
+
+max_line_length = 120
+
+[*.cs]
+curly_bracket_next_line = true
+
+# Avoid "this." for methods, fields, events and properties
+dotnet_style_qualification_for_field = false:error
+dotnet_style_qualification_for_method = false:error
+dotnet_style_qualification_for_property = false:error
+dotnet_style_qualification_for_event = false:error
+
+# Force expression coalescing 
+#             var a = x ?? y;
+# instead of: var a = x == null ? y : x;
+dotnet_style_coalesce_expression = true:error
+
+# Force null propagation
+#             var s = o?.ToString()
+# instead of: var s = o == null ? null : o.ToString()
+dotnet_style_null_propagation = true:error
+
+# Force pattern matching over cast checking
+#               if (o is int i)
+#   instead of: if (o is int) { var i = (int)o; }
+csharp_style_pattern_matching_over_is_with_cast_check = true:error
+
+# Force pattern matching over null checking
+#                if (o is string s)
+#    instead of: var s = (string)o; if (s != null) {}
+csharp_style_pattern_matching_over_as_with_null_check = true:error
+
+# Force inline variable declaration
+#             SomeCall(out onError e)
+# instead of: int e; SomeCall(out e);
+csharp_style_inlined_variable_declaration = true:error
+
+# Prefer braces even for one liner if's
+# NOTE: Just show as warning as some one-liners just look better with braces
+#       if it has a lot of parameters
+csharp_prefer_braces = true:warning
+
+# Require access modifiers all the time (i.e. private void Function(), not just void Function())
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:error
+
+# Prefer readonly fields
+dotnet_style_readonly_field = true:error
+
+# Newline configuration
+csharp_new_line_before_else = true:error
+csharp_new_line_before_catch = true:error
+csharp_new_line_before_finally = true:error
+
+# Space after statements such as if and for
+#				for (int i;i<x;i++) { ... }
+# instead of:	for(int i;i<x;i++) { ... }
+csharp_space_after_keywords_in_control_flow_statements = true:error
+
+# Space after colon for indicating inharitance
+#				class C : I { ... }
+# instead of:	class C: I { ... }
+csharp_space_after_colon_in_inheritance_clause = true:error
+
+# Async methods end with Async
+dotnet_naming_rule.async_methods_must_end_with_async.severity = error
+dotnet_naming_rule.async_methods_must_end_with_async.symbols  = async_methods_must_end_with_async_symbols
+dotnet_naming_rule.async_methods_must_end_with_async.style    = async_methods_must_end_with_async_style
+
+dotnet_naming_symbols.async_methods_must_end_with_async_symbols.applicable_kinds   = method
+dotnet_naming_symbols.async_methods_must_end_with_async_symbols.required_modifiers = async
+
+dotnet_naming_style.async_methods_must_end_with_async_style.capitalization  = pascal_case
+dotnet_naming_style.async_methods_must_end_with_async_style.required_suffix = Async
+
+# Member fields that are static readonly only follow PascalCase
+dotnet_naming_rule.readonly_members_follow_PascalCase.severity = error
+dotnet_naming_rule.readonly_members_follow_PascalCase.symbols  = readonly_members_follow_PascalCase_symbols
+dotnet_naming_rule.readonly_members_follow_PascalCase.style    = readonly_members_follow_PascalCase_style
+
+dotnet_naming_style.readonly_members_follow_PascalCase_style.capitalization         = pascal_case
+dotnet_naming_symbols.readonly_members_follow_PascalCase_symbols.applicable_kinds   = field
+dotnet_naming_symbols.readonly_members_follow_PascalCase_symbols.required_modifiers = readonly,static
+
+# Member fields that are const only follow PascalCase
+dotnet_naming_rule.const_members_follow_PascalCase.severity = error
+dotnet_naming_rule.const_members_follow_PascalCase.symbols  = const_members_follow_PascalCase_symbols
+dotnet_naming_rule.const_members_follow_PascalCase.style    = const_members_follow_PascalCase_style
+
+dotnet_naming_style.const_members_follow_PascalCase_style.capitalization         = pascal_case
+dotnet_naming_symbols.const_members_follow_PascalCase_symbols.applicable_kinds   = field
+dotnet_naming_symbols.const_members_follow_PascalCase_symbols.required_modifiers = const
+
+# Member fields must start with '_' then PascalCase
+dotnet_naming_rule.members_start_with_underscore.severity = error
+dotnet_naming_rule.members_start_with_underscore.symbols  = members_start_with_underscore_symbols
+dotnet_naming_rule.members_start_with_underscore.style    = members_start_with_underscore_style
+
+dotnet_naming_style.members_start_with_underscore_style.capitalization         = pascal_case
+dotnet_naming_style.members_start_with_underscore_style.required_prefix        = _
+dotnet_naming_symbols.members_start_with_underscore_symbols.applicable_kinds   = field
+dotnet_naming_symbols.members_start_with_underscore_symbols.required_modifiers = private,internal,protected,protected_internal
+
+# Properties and Enums are PascalCase
+dotnet_naming_rule.properties_pascal.severity = error
+dotnet_naming_rule.properties_pascal.symbols  = properties_pascal_symbols
+dotnet_naming_rule.properties_pascal.style = properties_pascal_style
+
+dotnet_naming_style.properties_pascal_style.capitalization         = pascal_case
+dotnet_naming_symbols.properties_pascal_symbols.applicable_kinds = property,enum
+
+# Classes, Structs, Events, Delegates, Methods and Interfaces are PascalCase
+dotnet_naming_rule.class_pascal.severity = error
+dotnet_naming_rule.class_pascal.symbols  = class_pascal_symbols
+dotnet_naming_rule.class_pascal.style    = class_pascal_style
+
+dotnet_naming_style.class_pascal_style.capitalization = pascal_case
+dotnet_naming_symbols.class_pascal_symbols.applicable_kinds = class,interface,struct,method,event,delegate
