@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TutorialApi.Models;
+using TutorialApi.Repositories;
 
 namespace TutorialApi.Controllers
 {
@@ -10,23 +11,23 @@ namespace TutorialApi.Controllers
     [ApiController]
     public class PeopleController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private readonly IPersonRepository _itemRepository;
 
-        public PeopleController(TodoContext context)
+        public PeopleController(IPersonRepository itemRepository)
         {
-            _context = context;
+            _itemRepository = itemRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetPeople()
+        public async Task<ActionResult<List<Person>>> GetPeople()
         {
-            return await _context.People.ToListAsync();
+            return await _itemRepository.GetPeopleListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetPerson(long id)
         {
-            var person = await _context.People.FindAsync(id);
+            var person = await _itemRepository.GetPersonByIdAsync(id);
 
             if (person == null)
             {
@@ -39,8 +40,7 @@ namespace TutorialApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Person>> PostPerson(Person person)
         {
-            _context.People.Add(person);
-            await _context.SaveChangesAsync();
+            await _itemRepository.PostPersonAsync(person);
 
             return CreatedAtAction(nameof(GetPerson), new { id = person.Id }, person);
         }

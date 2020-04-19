@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TutorialApi.Models;
+using TutorialApi.Repositories;
 
 namespace TutorialApi.Controllers
 {
@@ -10,23 +11,23 @@ namespace TutorialApi.Controllers
     [ApiController]
     public class TodoController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private readonly ITodoItemRepository _itemRepository;
 
-        public TodoController(TodoContext context)
+        public TodoController(ITodoItemRepository itemRepository)
         {
-            _context = context;
+            _itemRepository = itemRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
+        public async Task<ActionResult<List<TodoItem>>> GetTodoItems()
         {
-            return await _context.TodoItems.ToListAsync();
+            return await _itemRepository.GetItemsListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var todoItem = await _itemRepository.GetItemByIdAsync(id);
 
             if (todoItem == null)
             {
@@ -39,8 +40,7 @@ namespace TutorialApi.Controllers
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem item)
         {
-            _context.TodoItems.Add(item);
-            await _context.SaveChangesAsync();
+            await _itemRepository.PostItemAsync(item);
 
             return CreatedAtAction(nameof(GetTodoItem), new { id = item.Id }, item);
         }
@@ -53,8 +53,7 @@ namespace TutorialApi.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(item).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            await _itemRepository.PutItemAsync(item);
 
             return NoContent();
         }
@@ -62,15 +61,14 @@ namespace TutorialApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(long id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var todoItem = await _itemRepository.GetItemByIdAsync(id);
 
             if (todoItem == null)
             {
                 return NotFound();
             }
 
-            _context.TodoItems.Remove(todoItem);
-            await _context.SaveChangesAsync();
+            await _itemRepository.DeleteItemAsync(todoItem);
 
             return NoContent();
         }
