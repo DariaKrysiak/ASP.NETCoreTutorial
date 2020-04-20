@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TutorialApi.Models;
 using TutorialApi.Repositories;
 
@@ -21,7 +21,14 @@ namespace TutorialApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<TodoItem>>> GetTodoItems()
         {
-            return await _itemRepository.GetItemsListAsync();
+            var items = await _itemRepository.GetItemsListAsync();
+
+            if (items.Count == 0)
+            {
+                throw new InvalidOperationException("Items list is empty");
+            }
+
+            return items;
         }
 
         [HttpGet("{id}")]
