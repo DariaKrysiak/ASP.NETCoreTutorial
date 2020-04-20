@@ -31,5 +31,13 @@ namespace TutorialApi.Repositories
             _dbContext.People.Add(person);
             return _dbContext.SaveChangesAsync();
         }
+
+        public async Task<string> GetPersonName(TodoItem todoItem)
+        {
+            var person = await _dbContext.People
+                .Where(p => p.Id.Equals(todoItem.PersonId))
+                .SingleOrDefaultAsync();
+            return person.FirstName;
+        }
     }
 }

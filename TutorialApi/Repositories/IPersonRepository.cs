@@ -11,5 +11,7 @@ namespace TutorialApi.Repositories
         Task<Person> GetPersonByIdAsync(long id);
 
         Task PostPersonAsync(Person person);
+
+        Task<string> GetPersonName(TodoItem todoItem);
     }
 }

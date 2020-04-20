@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TutorialApi.Models;
+using TutorialApi.Repositories;
 using TutorialApi.WebModels;
 
 namespace TutorialApi.Controllers
@@ -12,21 +14,23 @@ namespace TutorialApi.Controllers
     [ApiController]
     public class TodoWithPersonsNamesController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private readonly ITodoItemRepository _itemRepository;
+        private readonly IPersonRepository _personRepository;
 
-        public TodoWithPersonsNamesController(TodoContext context)
+        public TodoWithPersonsNamesController(ITodoItemRepository itemRepository, IPersonRepository personRepository)
         {
-            _context = context;
+            _itemRepository = itemRepository;
+            _personRepository = personRepository;
         }
 
         [HttpGet("withPersonsNames")]
         public async Task<ActionResult<IEnumerable<TodoItemWithPersonsName>>> GetTodoItemsWithPersonsNames()
         {
-            var items = await _context.TodoItems.ToListAsync();
+            var items = await _itemRepository.GetItemsListAsync();
 
-            if (items == null)
+            if (items.Count == 0)
             {
-                return new NotFoundResult();
+                throw new InvalidOperationException("Items list is empty");
             }
 
             var itemsWithPersonsNames = new List<TodoItemWithPersonsName>();
@@ -37,21 +41,13 @@ namespace TutorialApi.Controllers
                 {
                     TodoItemName = item.Name,
                     IsComplete = item.IsComplete,
-                    PersonName = await GetPersonName(item)
+                    PersonName = await _personRepository.GetPersonName(item)
                 };
 
                 itemsWithPersonsNames.Add(itemWithPersonsName);
             }
 
             return new OkObjectResult(itemsWithPersonsNames);
-        }
-
-        private async Task<string> GetPersonName(TodoItem todoItem)
-        {
-            var person = await _context.People
-                .Where(p => p.Id.Equals(todoItem.PersonId))
-                .SingleOrDefaultAsync();
-            return person.FirstName;
         }
     }
 }
